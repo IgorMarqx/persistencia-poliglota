@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb_poliglota
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: geolocalizacao
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - poliglota_network
+
+  # Streamlit Application
+  app:
+    build: .
+    container_name: streamlit_poliglota
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    environment:
+      - MONGODB_CONNECTION_STRING=mongodb://admin:password123@mongodb:27017/geolocalizacao?authSource=admin
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - mongodb
+    networks:
+      - poliglota_network
+
+volumes:
+  mongodb_data:
+
+networks:
+  poliglota_network:
+    driver: bridge
