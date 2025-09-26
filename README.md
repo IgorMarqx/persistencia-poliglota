@@ -208,6 +208,7 @@ O sistema inclui dados de exemplo do Nordeste brasileiro:
 
 ## Desenvolvido por
 Rian Lucas Gomes Candido - 30632722
+Igor Marques de Azevedo - 29200296
 
 **Professor:** Ricardo Roberto de Lima
 
